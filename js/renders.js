@@ -26,7 +26,7 @@ export function renderNotFound() {
 export function renderFilmsList(filmsList) {
     const page = fragment/*html*/`
     <div class="films-list">
-        <h1 class="page-title">Films list</h1>
+        <h1 class="page-title">Список фильмов для просмотра</h1>
         <div class="films__list card-list">
             ${filmsList.length === 0 
                 ? /*html*/`<h5 class="no-films">No films yet.</h5>` 
