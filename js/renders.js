@@ -14,7 +14,7 @@ function fragment(strings, ...values) {
  */ 
 export function renderNotFound() {
     return fragment/*html*/`
-        <h1>Page not found</h1>
+        <h1 class="page-title">Страница не найдена</h1>
     `;
 }
 
