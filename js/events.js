@@ -3,7 +3,7 @@
 
 import { saveFilms, getFilmById } from './data.js';
 import { partial, toJson } from './helpers.js';
-import {updateContent} from './index.js';
+import {rerenderFilmCard} from './renders.js';
 
 /**
  * Функция обработки события смена статуса фильма
@@ -15,7 +15,7 @@ function handleToggleFilmStatus(filmId)
     if (!film) return; // Если фильм не найден
     film.watch = !film.watch // Переключить статус фильма
     saveFilms(); // Сохранить список фильмов в локальное хранилище
-    updateContent(); // Перерисовать содержимое
+    rerenderFilmCard(film); // Перерисовать содержимое
 }
 
 function initDispatchEvents() {

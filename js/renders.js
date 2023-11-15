@@ -60,3 +60,14 @@ function getFilmCardTemplate(filmsList) {
     }).join('');
 }
 
+export function rerenderFilmCard(film) {
+    const elem = document.querySelector(`.card.film[data-id="${film.id}"]`); // Найти элемент карточки
+    if (!elem) return;
+    const newElem = getFilmCardTemplate([film]); // Создать новый элемент
+    // Получить node нового элемента
+    const newElemPlaceholder = document.createElement('div');
+    newElemPlaceholder.innerHTML = newElem;
+    const newElemNode = newElemPlaceholder.firstElementChild;
+    // Заменить объект
+    elem.replaceWith(newElemNode);
+}
