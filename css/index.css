@@ -164,6 +164,14 @@ body {
   text-decoration: line-through;
 }
 
+span.watched {
+  color: #20fa4c;
+}
+
+span.unwatched {
+  color: #ffbf01;
+}
+
 /* Заголовок страницы */
 
 .page-title {

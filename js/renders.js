@@ -53,7 +53,7 @@ function getFilmCardTemplate(filmsList) {
                 <div class="card-content">
                     <div class="film-description"><span class="card-point-name">Описание:</span> ${film.description} </div>
                     <div class="film-genres"><span class="card-point-name">Жанры:</span> ${arrayToString(film.genres)}</div>
-                    <div class="film-status"><span class="card-point-name">Статус:</span> ${film.watch ? 'Просмотрен' : 'Не просмотрен'}</div>
+                    <div class="film-status"><span class="card-point-name">Статус:</span> ${film.watch ? `<span class="watched">Просмотрен</span>` : `<span class="unwatched">Не просмотрен</span>`}</div>
                 </div>
             </div>   
         `;
