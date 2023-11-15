@@ -1,6 +1,7 @@
 import { initTheme } from "./theme.js";
 import { renderNotFound, renderFilmsList } from "./renders.js";
-import {getBaseFilmsList } from "./data.js";
+import {getFilmsList } from "./data.js";
+import { initEvents } from "./events.js";
 
 const stylesLink = document.createElement("link");
 stylesLink.rel = "stylesheet";
@@ -18,22 +19,23 @@ function start() {
         <div class="content"></div>
       </div>`; 
     initTheme();
-    updateContent();
+    initEvents();
+    updateContent(); //Временно
+}
+
+export function updateContent() {
+  const content = document.querySelector('.content');
+  if (!content) return;
+  content.replaceChildren(router());
 }
 
 // Маршрутизация
 function router() {
-    const hash = window.location.hash; // Текущее положение хеша
-    if (hash === '')
-        return renderFilmsList(getBaseFilmsList());
-    else 
-        return renderNotFound();
-}
-
-function updateContent() {
-  const content = document.querySelector('.content');
-  if (!content) return;
-  content.replaceChildren(router());
+  const hash = window.location.hash; // Текущее положение хеша
+  if (hash === '')
+      return renderFilmsList(getFilmsList());
+  else 
+      return renderNotFound();
 }
 
 window.addEventListener('hashchange', updateContent());

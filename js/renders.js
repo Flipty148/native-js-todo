@@ -1,3 +1,4 @@
+import { dispatchToggleFilmStatus } from "./events.js";
 import { arrayToString } from "./helpers.js";
 import { eyeIcon, eyeOffIcon } from "./icons.js";
 
@@ -44,8 +45,8 @@ export function renderFilmsList(filmsList) {
 function getFilmCardTemplate(filmsList) {
     return filmsList.map(film => {
         return /*html*/`
-            <div class="list__item card film" data-id="${film.id}">
-                <div class="card-header film-header ${film.watch ? 'film-header__watch' : ''}">
+            <div class="list__item card film" data-id="${film.id}" onclick="${dispatchToggleFilmStatus(film.id)}">
+                <div class="card-header film-header ${film.watch ? 'film-header__watch' : ''}" >
                     <h5 class="card-title">${film.title}</h5>
                     <div class="card-icon film-status-icon">${film.watch ? eyeOffIcon() : eyeIcon()}</div>
                 </div>

@@ -9,3 +9,17 @@ export function arrayToString(array) {
     });
     return str;
 }
+
+export function partial(fn, ...apply) {
+    return (...args) => fn(...apply, ...args);
+}
+
+export function toJson(value) {
+    try {
+      return JSON.stringify(value).replace(/"/g, "'");
+    } catch (e) {
+      return null;
+    }
+  }
+
+

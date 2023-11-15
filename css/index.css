@@ -110,6 +110,8 @@ body {
   background-color: var(--card-bg-color);
   border-radius: 0.25rem;
   padding: 1rem;
+  cursor: pointer;
+  user-select: none;
 }
 
 .card:hover {
@@ -127,7 +129,6 @@ body {
   flex-direction: row;
   gap: 1rem;
   width: 100%;
-  cursor: pointer;
   margin-bottom: 1rem;
 }
 
