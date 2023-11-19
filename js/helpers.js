@@ -20,6 +20,13 @@ export function toJson(value) {
     } catch (e) {
       return null;
     }
-  }
+}
 
-
+/**
+ * Функция выполняющая вставку защищающую строку от инъекций
+ */
+export function sanitize(value) {
+    const tmp = document.createElement('div'); //Создать временный объект
+    tmp.textContent = value; // Вставить входную строку как текстовый контент, чтобы он автоматически преобразовал все символы
+    return tmp.innerHTML; // Вернуть преобразованную строку
+}

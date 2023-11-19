@@ -1,6 +1,7 @@
 import { dispatchToggleFilmStatus } from "./events.js";
 import { arrayToString } from "./helpers.js";
 import { eyeIcon, eyeOffIcon } from "./icons.js";
+import { handleAddFilmForm } from "./form.js";
 
 
 function fragment(strings, ...values) {
@@ -30,7 +31,7 @@ export function renderFilmsList(filmsList) {
         <h1 class="page-title">Список фильмов для просмотра</h1>
         <div class="films__list card-list">
             ${filmsList.length === 0 
-                ? /*html*/`<h5 class="no-films">No films yet.</h5>` 
+                ? /*html*/`<h5 class="no-films">Список фильмов пуст.</h5>` 
                 : getFilmCardTemplate(filmsList)}
         </div>
         <div class="films-add">
@@ -61,6 +62,8 @@ export function renderFilmsList(filmsList) {
         </div>
     </div>
     `;
+    const form = page.querySelector('.form-films-add');
+    form.addEventListener('submit', handleAddFilmForm);
     return page;
 }
 
@@ -84,6 +87,17 @@ function getFilmCardTemplate(filmsList) {
             </div>   
         `;
     }).join('');
+}
+
+/**
+ * Добавление карточки
+ * @param {Film} film 
+ * @returns 
+ */
+export function appendFilmCard(film) {
+    const filmList = document.querySelector('.films__list');
+    if (!filmList) return; 
+    filmList.insertAdjacentHTML("beforeend", getFilmCardTemplate([film]));
 }
 
 export function rerenderFilmCard(film) {

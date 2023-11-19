@@ -2,6 +2,7 @@
 /// <reference path="./types.d.ts"/>
 
 import { saveFilms, getFilmById } from './data.js';
+import { handleAddFilmForm } from './form.js';
 import { partial, toJson } from './helpers.js';
 import {rerenderFilmCard} from './renders.js';
 
@@ -64,10 +65,11 @@ function addEvent(eventName, callback) {
 export function initEvents() {
     initDispatchEvents();
     addEvent(events.toggleFilmStatus, handleToggleFilmStatus);
+    addEvent(events.addNewFilm, handleAddFilmForm);
 }
 
 const events = {
-    toggleFilmStatus : "toggle-film-status"
+    toggleFilmStatus : "toggle-film-status",
 };
 
 /**
@@ -79,3 +81,5 @@ function baseDispatch(eventName, details) {
 }
 
 export const dispatchToggleFilmStatus = partial(baseDispatch, events.toggleFilmStatus); // Dispatch для переключения статуса фильма
+
+
