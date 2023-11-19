@@ -1,7 +1,7 @@
 import { dispatchRemoveFilm, dispatchToggleFilmStatus } from "./events.js";
 import { arrayToString } from "./helpers.js";
 import { deleteIcon, eyeIcon, eyeOffIcon } from "./icons.js";
-import { handleAddFilmForm } from "./form.js";
+import { handleAddFilmForm, handleRemoveConfirm } from "./form.js";
 
 
 function fragment(strings, ...values) {
@@ -132,4 +132,39 @@ function validation(value) {
         oninvalid="this.setCustomValidity('Введие корректное ${value}');this.parentElement.classList.add('input-error')"
         oninput="this.setCustomValidity('');this.parentElement.classList.remove('input-error');"
     `
+}
+
+/**
+ * Функция отрисовки модального окна
+ */
+export function renderModal(content) {
+    const modal = fragment/*html*/`
+    <div class="modal">
+        <div class="modal-content">
+        </div>
+    </div>
+    `;
+    const modalContent = modal.querySelector('.modal-content');
+    modalContent.appendChild(content);
+    return modal;
+}
+
+export function removeModal() {
+    const modal = document.querySelector('.modal');
+    modal.remove();
+}
+
+export function renderRemoveConfirm(film) {
+    const content = fragment/*html*/`
+    <div class="remove-confitm">
+        <h3>Вы действительно хотите удалить следующий фильм: ${film.title}?</h3>
+        <form class="form-remove-confirm">
+            <button class="btn btn-danger" type="submit" value="confirm">Да</button>
+            <button class="btn btn-green" type="submit" value="cancel">Нет</button>
+        </form>
+    </div>
+    `;
+    const form = content.querySelector('.form-remove-confirm');
+    form.addEventListener('submit', (e) => handleRemoveConfirm(e, film.id));
+    return content;
 }

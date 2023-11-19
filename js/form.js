@@ -1,7 +1,10 @@
 import { sanitize } from "./helpers.js";
 import { getFilmsList, saveFilms } from "./data.js";
-import { appendFilmCard } from "./renders.js";
+import { appendFilmCard, removeModal } from "./renders.js";
 import { updateContent } from "./index.js";
+import { handleRemoveFilm } from "./events.js";
+
+let removeConfirm = false;
 
 /**
  * Функция получающая значения элементов формы
@@ -45,4 +48,14 @@ export function handleAddFilmForm(event) {
         else
             appendFilmCard(newFilm); // Добавить карточку нового фильма
     }
+}
+
+export function handleRemoveConfirm(event, filmId) {
+    event.preventDefault();
+    const submitter = event.submitter;
+    if (!submitter) return;
+    const val = submitter.value;
+    if (val === "confirm")
+        handleRemoveFilm(filmId);
+    removeModal();
 }

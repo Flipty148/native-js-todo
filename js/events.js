@@ -2,10 +2,10 @@
 /// <reference path="./types.d.ts"/>
 
 import { saveFilms, getFilmById, getFilmsList } from './data.js';
-import { handleAddFilmForm } from './form.js';
+import {  handleRemoveConfirm } from './form.js';
 import { partial, toJson } from './helpers.js';
 import { updateContent } from './index.js';
-import {removeFilmCard, rerenderFilmCard} from './renders.js';
+import {removeFilmCard, renderModal, renderRemoveConfirm, rerenderFilmCard} from './renders.js';
 
 /**
  * Функция обработки события смена статуса фильма
@@ -42,16 +42,25 @@ export function handleDropdown(event) {
     }
 } 
 
+function handleShowRemoveFilmConfirmation(filmId) {
+    const film = getFilmById(filmId); // Найти фильм по Id
+    if (!film) return; //Фильм не найден
+    const res = renderModal(renderRemoveConfirm(film));
+    const modal = res.querySelector('.modal');
+    if (!modal) return;
+    modal.classList.add('modal-open');
+    document.body.append(modal);
+}
+
 /**
  * Функция обработки события удаления фильма
  * @param {Number} filmId 
  * @returns 
  */
-function handleRemoveFilm(filmId) {
+export function handleRemoveFilm(filmId) {
     const film = getFilmById(filmId); // Найти фильм по Id
-    if (!film) return; //Фильм не найден
-    if (!confirm(`Вы действительно хотите удалить следующий фильм: ${film?.title}`)) return; // Подтверждение удаления фильма
     const filmList = getFilmsList(); // Список фильмов
+    if (!film) return; //Фильм не найден
     const index = filmList.indexOf(film) // Найти индекс фильма в списке
     filmList.splice(index, 1); // Удалить фильм из списка
     saveFilms(); // Сохранения списка фильмов 
@@ -85,7 +94,7 @@ function addEvent(eventName, callback) {
 export function initEvents() {
     initDispatchEvents();
     addEvent(events.toggleFilmStatus, handleToggleFilmStatus);
-    addEvent(events.removeFilm, handleRemoveFilm);
+    addEvent(events.removeFilm, handleShowRemoveFilmConfirmation);
 }
 
 const events = {

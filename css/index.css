@@ -13,6 +13,7 @@
     --danger-hover-bg-color: #c82333;
     --danger-color: #e70918;
     --done-color: #029121;
+    --done-hover-color: #03791c;
     --progress-color: #b08300;
     --card-bg-color: #dfe7ee;
 }
@@ -30,6 +31,7 @@
     --danger-hover-bg-color: #c82333;
     --danger-color: #fa3846;
     --done-color: #20fa4c;
+    --done-hover-color: #03791c;
     --progress-color: #ffc62a;
     --card-bg-color: #4a4a4a;
 }
@@ -342,4 +344,49 @@ input {
 
 .btn-icon-danger:hover {
   color: var(--danger-hover-bg-color);
+}
+
+.btn-danger {
+  background-color: var(--danger-bg-color);
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-hover-bg-color);
+}
+
+.btn-green {
+  background-color: var(--done-color);
+}
+
+.btn-green:hover {
+  background-color: var(--done-hover-color);
+}
+
+.form-remove-confirm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: var(--bg-color);
+  border-radius: 0.25rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 400px;
+  opacity: 0;
+  margin: auto;
+  margin-bottom: 70vh;
+}
+
+.modal-open,.modal-open .modal-content {
+  opacity: 1;
 }
