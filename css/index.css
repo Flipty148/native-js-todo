@@ -244,10 +244,15 @@ span.unwatched {
 }
 
 .films-title-input {
-   font-size: larger;
-   width: 60%;
-   background-color: var(--card-bg-color);
-   color: var(--text-color)
+    font-size: larger;
+    width: 60%;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    outline: none;
+    border: 2px solid #ccc;
+    border-radius: 0.2rem;
+    padding: 0.3rem;
+    font-family: inherit;
 }
 
 .dropdown {
@@ -294,6 +299,10 @@ span.unwatched {
 }
 
 textarea {
+  font-size: large;
+}
+
+input {
   font-size: large;
 }
 
