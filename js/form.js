@@ -22,7 +22,7 @@ function handleForm(event) {
 
 export function handleAddFilmForm(event) {
     const {values : {title, description, genres}} = handleForm(event);
-    if (title && description && genres) {
+    if (title) {
         const films = getFilmsList(); // Получить список фильмов
         const gen = genres.split(';').map((genre)=> {
             let res = genre.toLowerCase();
