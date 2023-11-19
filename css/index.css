@@ -130,12 +130,16 @@ body {
   /* Карточки фильмов */
 .card {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   background-color: var(--card-bg-color);
   border-radius: 0.25rem;
   padding: 1rem;
   cursor: pointer;
   user-select: none;
+}
+
+.card-body {
+  width:100%;
 }
 
 .card:hover {
@@ -256,7 +260,7 @@ span.unwatched {
 }
 
 .films-title-input::placeholder {
-  color: #ccc;
+  color: var(--text-color);
   opacity: 0.75;
 }
 
@@ -326,6 +330,16 @@ input {
 }
 
 .description-textarea::placeholder, .genres-input::placeholder {
-  color: #ccc;
+  color: var(--text-color);
   opacity: 0.75;
+}
+
+/* Удаление */
+.btn-icon {
+  margin: 0;
+  padding: 0;
+}
+
+.btn-icon-danger:hover {
+  color: var(--danger-hover-bg-color);
 }

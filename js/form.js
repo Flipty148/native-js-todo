@@ -1,6 +1,7 @@
 import { sanitize } from "./helpers.js";
 import { getFilmsList, saveFilms } from "./data.js";
 import { appendFilmCard } from "./renders.js";
+import { updateContent } from "./index.js";
 
 /**
  * Функция получающая значения элементов формы
@@ -39,6 +40,9 @@ export function handleAddFilmForm(event) {
         } //Новый фильм
         films.push(newFilm); // Вставить новый фильм
         saveFilms(); //Сохранить фильмы
-        appendFilmCard(newFilm); // Добавить карточку нового фильма
+        if (films.length === 1)
+            updateContent();
+        else
+            appendFilmCard(newFilm); // Добавить карточку нового фильма
     }
 }

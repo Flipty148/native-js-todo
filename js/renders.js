@@ -1,6 +1,6 @@
-import { dispatchToggleFilmStatus } from "./events.js";
+import { dispatchRemoveFilm, dispatchToggleFilmStatus } from "./events.js";
 import { arrayToString } from "./helpers.js";
-import { eyeIcon, eyeOffIcon } from "./icons.js";
+import { deleteIcon, eyeIcon, eyeOffIcon } from "./icons.js";
 import { handleAddFilmForm } from "./form.js";
 
 
@@ -74,15 +74,20 @@ export function renderFilmsList(filmsList) {
 function getFilmCardTemplate(filmsList) {
     return filmsList.map(film => {
         return /*html*/`
-            <div class="list__item card film" data-id="${film.id}" onclick="${dispatchToggleFilmStatus(film.id)}">
-                <div class="card-header film-header ${film.watch ? 'film-header__watch' : ''}" >
-                    <h5 class="card-title">${film.title}</h5>
-                    <div class="card-icon film-status-icon">${film.watch ? eyeOffIcon() : eyeIcon()}</div>
+            <div class="list__item card film" data-id="${film.id}">
+                <div class="card-body" onclick="${dispatchToggleFilmStatus(film.id)}">
+                    <div class="card-header film-header ${film.watch ? 'film-header__watch' : ''}" >
+                        <h5 class="card-title">${film.title}</h5>
+                    </div>
+                    <div class="card-content">
+                        <div class="film-description"><span class="card-point-name">Описание:</span> ${film.description} </div>
+                        <div class="film-genres"><span class="card-point-name">Жанры:</span> ${arrayToString(film.genres)}</div>
+                        <div class="film-status"><span class="card-point-name">Статус:</span> ${film.watch ? `<span class="watched">Просмотрен</span>` : `<span class="unwatched">Не просмотрен</span>`}</div>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <div class="film-description"><span class="card-point-name">Описание:</span> ${film.description} </div>
-                    <div class="film-genres"><span class="card-point-name">Жанры:</span> ${arrayToString(film.genres)}</div>
-                    <div class="film-status"><span class="card-point-name">Статус:</span> ${film.watch ? `<span class="watched">Просмотрен</span>` : `<span class="unwatched">Не просмотрен</span>`}</div>
+                <div class="card-icons">
+                    <div class="card-icon film-status-icon" onclick="${dispatchToggleFilmStatus(film.id)}">${film.watch ? eyeOffIcon() : eyeIcon()}</div>
+                    <a class="btn-icon btn-icon-danger" type="button" onclick="${dispatchRemoveFilm(film.id)}">${deleteIcon()}</a>
                 </div>
             </div>   
         `;
@@ -98,6 +103,15 @@ export function appendFilmCard(film) {
     const filmList = document.querySelector('.films__list');
     if (!filmList) return; 
     filmList.insertAdjacentHTML("beforeend", getFilmCardTemplate([film]));
+}
+
+/**
+ * Удаление карточки
+ * @param {Number} filmId 
+ */
+export function removeFilmCard(filmId) {
+    const filmCard = document.querySelector(`.films__list .film[data-id="${filmId}"]`); // Найти карточку фильма
+    filmCard.remove(); // Удалить карточку фильма
 }
 
 export function rerenderFilmCard(film) {

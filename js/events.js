@@ -1,10 +1,11 @@
 // @ts-check
 /// <reference path="./types.d.ts"/>
 
-import { saveFilms, getFilmById } from './data.js';
+import { saveFilms, getFilmById, getFilmsList } from './data.js';
 import { handleAddFilmForm } from './form.js';
 import { partial, toJson } from './helpers.js';
-import {rerenderFilmCard} from './renders.js';
+import { updateContent } from './index.js';
+import {removeFilmCard, rerenderFilmCard} from './renders.js';
 
 /**
  * Функция обработки события смена статуса фильма
@@ -41,6 +42,25 @@ export function handleDropdown(event) {
     }
 } 
 
+/**
+ * Функция обработки события удаления фильма
+ * @param {Number} filmId 
+ * @returns 
+ */
+function handleRemoveFilm(filmId) {
+    const film = getFilmById(filmId); // Найти фильм по Id
+    if (!film) return; //Фильм не найден
+    if (!confirm(`Вы действительно хотите удалить следующий фильм: ${film?.title}`)) return; // Подтверждение удаления фильма
+    const filmList = getFilmsList(); // Список фильмов
+    const index = filmList.indexOf(film) // Найти индекс фильма в списке
+    filmList.splice(index, 1); // Удалить фильм из списка
+    saveFilms(); // Сохранения списка фильмов 
+    if (filmList.length === 0)
+        updateContent(); // Обновить содержимое страницы
+    else
+        removeFilmCard(filmId); // Удалить карточку фильма
+}
+
 function initDispatchEvents() {
     /**
    * @param {string} eventName 
@@ -65,11 +85,12 @@ function addEvent(eventName, callback) {
 export function initEvents() {
     initDispatchEvents();
     addEvent(events.toggleFilmStatus, handleToggleFilmStatus);
-    addEvent(events.addNewFilm, handleAddFilmForm);
+    addEvent(events.removeFilm, handleRemoveFilm);
 }
 
 const events = {
     toggleFilmStatus : "toggle-film-status",
+    removeFilm : "remove-film"
 };
 
 /**
@@ -82,4 +103,4 @@ function baseDispatch(eventName, details) {
 
 export const dispatchToggleFilmStatus = partial(baseDispatch, events.toggleFilmStatus); // Dispatch для переключения статуса фильма
 
-
+export const dispatchRemoveFilm = partial(baseDispatch, events.removeFilm); // Dispatch для удаления фильма
