@@ -33,6 +33,32 @@ export function renderFilmsList(filmsList) {
                 ? /*html*/`<h5 class="no-films">No films yet.</h5>` 
                 : getFilmCardTemplate(filmsList)}
         </div>
+        <div class="films-add">
+            <form class="form-films-add" role="form" method="post">
+                <input class="films-title-input" type="text" name="title" placeholder="Название фильма" ${validation('название фильма')}>
+                <div class="dropdown">
+                    <div class="dropdown-description">
+                        <button class="btn btn-primary" id="dropdown-description-button" type="button">Описание</button>
+                    </div>
+                    <div class="dropdown-content-wrapper">
+                        <div class="dropdown-content">
+                            <textarea placeholder="Описание" class="description-textarea" id="description-textarea" name="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <div class="dropdown-genres">
+                        <button class="btn btn-primary" id="dropdown-genres-button" type="button">Жанры</button>
+                    </div>
+                    <div class="dropdown-content-wrapper">
+                        <div class="dropdown-content">
+                            <input placeholder="Жанры, разделенные ';'" class="genres-input" id="genres-input" name="genres"/>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary", type="submit" id="film-add-button">Добавить</button>
+            </form>
+        </div>
     </div>
     `;
     return page;
@@ -70,4 +96,12 @@ export function rerenderFilmCard(film) {
     const newElemNode = newElemPlaceholder.firstElementChild;
     // Заменить объект
     elem.replaceWith(newElemNode);
+}
+
+function validation(value) {
+    return /*html*/`
+        required
+        oninvalid="this.setCustomValidity('Введие корректное ${value}');this.parentElement.classList.add('input-error')"
+        oninput="this.setCustomValidity('');this.parentElement.classList.remove('input-error');"
+    `
 }

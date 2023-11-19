@@ -1,7 +1,7 @@
 import { initTheme } from "./theme.js";
 import { renderNotFound, renderFilmsList } from "./renders.js";
 import {getFilmsList } from "./data.js";
-import { initEvents } from "./events.js";
+import { initEvents, handleDropdown } from "./events.js";
 
 const stylesLink = document.createElement("link");
 stylesLink.rel = "stylesheet";
@@ -18,6 +18,7 @@ function start() {
       <div class="container">
         <div class="content"></div>
       </div>`; 
+    root.addEventListener('click', handleDropdown);
     initTheme();
     initEvents();
     updateContent(); //Временно

@@ -18,6 +18,28 @@ function handleToggleFilmStatus(filmId)
     rerenderFilmCard(film); // Перерисовать содержимое
 }
 
+/**
+ * Функция обработки dropdown
+ */
+export function handleDropdown(event) {
+    const dropdown = event.target.closest('.dropdown');
+    // Закрыть другие dropdown
+    document.querySelectorAll('.dropdown').forEach(otherDropdown => {
+        if (otherDropdown !== dropdown)
+            otherDropdown.classList.remove('dropdown-open');
+    });
+    // Открыть соответствующий dropdown
+    if (dropdown && event.target.closest('#dropdown-description-button'))
+        dropdown.classList.toggle('dropdown-open');
+    else if (dropdown && event.target.closest('#dropdown-genres-button'))
+        dropdown.classList.toggle('dropdown-open');
+    else if (!dropdown || (!event.target.closest('textarea') && !event.target.closest('input'))) {
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.classList.remove('dropdown-open');
+        });
+    }
+} 
+
 function initDispatchEvents() {
     /**
    * @param {string} eventName 
@@ -54,6 +76,6 @@ const events = {
  */
 function baseDispatch(eventName, details) {
     return `window.dispatch?.call(null, '${eventName}', ${toJson(details)})`
-  }
+}
 
 export const dispatchToggleFilmStatus = partial(baseDispatch, events.toggleFilmStatus); // Dispatch для переключения статуса фильма
