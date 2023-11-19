@@ -255,6 +255,11 @@ span.unwatched {
     font-family: inherit;
 }
 
+.films-title-input::placeholder {
+  color: #ccc;
+  opacity: 0.75;
+}
+
 .dropdown {
   position: relative;
   display: inline-flex;
@@ -308,4 +313,19 @@ input {
 
 #dropdown-genres-button, #dropdown-description-button {
   height: 100%;
+}
+
+.description-textarea, .genres-input {
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  outline: none;
+  border: 2px solid #ccc;
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+  font-family: inherit;
+}
+
+.description-textarea::placeholder, .genres-input::placeholder {
+  color: #ccc;
+  opacity: 0.75;
 }
