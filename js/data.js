@@ -63,3 +63,18 @@ export function saveFilms() {
     const films = getFilmsList(); // Получить фильмы
     localStorage.setItem('films', JSON.stringify(films)); // ЗАписать в хранилище
 }
+
+/**
+ * Функция, которая формирует множество жанров
+ */
+export function getAllGenres() {
+    const res = new Set(); // Создание множества
+    const films = getFilmsList(); // Получение списка фильмов
+    films.forEach( (film) => {
+        film.genres.forEach( (genre) => {
+            res.add(genre);
+        })
+    }); // Формирование множества жанров
+    const resArr = Array.from(res).sort(); // Сортировка в алфавитном порядке
+    return resArr;
+}

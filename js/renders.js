@@ -2,6 +2,7 @@ import { dispatchRemoveFilm, dispatchToggleFilmStatus } from "./events.js";
 import { arrayToString } from "./helpers.js";
 import { deleteIcon, eyeIcon, eyeOffIcon, editIcon, backIcon } from "./icons.js";
 import { handleAddFilmForm, handleRemoveConfirm, handleEditFilm } from "./form.js";
+import { getAllGenres } from "./data.js";
 
 
 function fragment(strings, ...values) {
@@ -27,44 +28,74 @@ export function renderNotFound() {
  */
 export function renderFilmsList(filmsList) {
     const page = fragment/*html*/`
+    <h1 class="page-title">Список фильмов для просмотра</h1>
     <div class="films-list">
-        <h1 class="page-title">Список фильмов для просмотра</h1>
-        <div class="films__list card-list">
-            ${filmsList.length === 0 
-                ? /*html*/`<h5 class="no-films">Список фильмов пуст.</h5>` 
-                : getFilmCardTemplate(filmsList)}
+        <div class="filters-block">
+            <label class="filters-label">Статус 
+                <select class="filters-whatch">
+                    <option value="all" selected>Все</option>
+                    <option value="true">Просмотрен</option>
+                    <option value="false">Не просмотрен</option>
+                </select>
+            </label>
+            <label class="filters-label">Жанры
+                ${(function fun() { // Вывод списка жанров
+                    const genres = getAllGenres();
+                    let res = "";
+                    genres.forEach((genre) => {
+                        res += getCheckboxTemplate(genre);
+                    });
+                    return res;
+                })()}
+            </label>
         </div>
-        <div class="films-add">
-            <form class="form-films-add" role="form" method="post">
-                <input class="films-title-input" type="text" name="title" placeholder="Название фильма" ${validation('название фильма')}>
-                <div class="dropdown">
-                    <div class="dropdown-description">
-                        <button class="btn btn-primary" id="dropdown-description-button" type="button">Описание</button>
-                    </div>
-                    <div class="dropdown-content-wrapper">
-                        <div class="dropdown-content">
-                            <textarea placeholder="Описание" class="description-textarea" id="description-textarea" name="description"></textarea>
+        <div class="films-block">
+            <div class="films__list card-list">
+                ${filmsList.length === 0 
+                    ? /*html*/`<h5 class="no-films">Список фильмов пуст.</h5>` 
+                    : getFilmCardTemplate(filmsList)}
+            </div>
+            <div class="films-add">
+                <form class="form-films-add" role="form" method="post">
+                    <input class="films-title-input" type="text" name="title" placeholder="Название фильма" ${validation('название фильма')}>
+                    <div class="dropdown">
+                        <div class="dropdown-description">
+                            <button class="btn btn-primary" id="dropdown-description-button" type="button">Описание</button>
+                        </div>
+                        <div class="dropdown-content-wrapper">
+                            <div class="dropdown-content">
+                                <textarea placeholder="Описание" class="description-textarea" id="description-textarea" name="description"></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="dropdown">
-                    <div class="dropdown-genres">
-                        <button class="btn btn-primary" id="dropdown-genres-button" type="button">Жанры</button>
-                    </div>
-                    <div class="dropdown-content-wrapper">
-                        <div class="dropdown-content">
-                            <input placeholder="Жанры, разделенные ';'" class="genres-input" id="genres-input" name="genres"/>
+                    <div class="dropdown">
+                        <div class="dropdown-genres">
+                            <button class="btn btn-primary" id="dropdown-genres-button" type="button">Жанры</button>
+                        </div>
+                        <div class="dropdown-content-wrapper">
+                            <div class="dropdown-content">
+                                <input placeholder="Жанры, разделенные ';'" class="genres-input" id="genres-input" name="genres"/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <button class="btn btn-primary", type="submit" id="film-add-button">Добавить</button>
-            </form>
+                    <button class="btn btn-primary", type="submit" id="film-add-button">Добавить</button>
+                </form>
+            </div>
         </div>
     </div>
     `;
     const form = page.querySelector('.form-films-add');
     form.addEventListener('submit', handleAddFilmForm);
     return page;
+}
+
+function getCheckboxTemplate(element) {
+    return /*html*/`
+    <label class="checkbox-label">
+        <input class="checkbox-input" type="checkbox" name="${element ? element : 'Без жанра'}" />
+        ${element ? element : 'Без жанра'}
+    </label>
+    `
 }
 
 /**
