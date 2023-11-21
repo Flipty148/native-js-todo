@@ -1,5 +1,5 @@
 import { sanitize } from "./helpers.js";
-import { getFilmsList, saveFilms } from "./data.js";
+import { getFilmsList, saveFilms, getFilmById } from "./data.js";
 import { appendFilmCard, removeModal } from "./renders.js";
 import { updateContent } from "./index.js";
 import { handleRemoveFilm } from "./events.js";
@@ -16,7 +16,7 @@ function handleForm(event) {
     const form = event.target; // Получение формы
     if (!(form instanceof HTMLFormElement)) throw new Error("form must be a HTMLFormElement");
     const values = {};
-    const inputs = form.querySelectorAll("input[name], textarea[name]"); // Получение элементов формы
+    const inputs = form.querySelectorAll("input[name], textarea[name], select[name]"); // Получение элементов формы
     inputs.forEach(input => {
         values[input.name] = sanitize(input.value); //Записать значение
         input.value = ""; // Очистить значение
@@ -58,4 +58,24 @@ export function handleRemoveConfirm(event, filmId) {
     if (val === "confirm")
         handleRemoveFilm(filmId);
     removeModal();
+}
+
+export function handleEditFilm(event) {
+    const {values : {title, description, genres, status} } = handleForm(event); // Получение данных формы
+    const form = event.target; // Получение формы
+    const filmId = form.dataset.filmId; // Получение id фильма
+    const film = getFilmById(filmId); // Получение фильма
+    if (!film) return;
+    film.title = title; //Смена названия фильма
+    film.description = description; // Смена описания фильма
+    const gen = genres.split(';').map((genre)=> {
+        let res = genre.toLowerCase();
+        res = res.replace(/\s+/g, '');
+        res = res.charAt(0).toUpperCase() + res.slice(1);
+        return res;
+    });
+    film.genres = gen; //Смена жанров
+    film.watch = status === 'true'; //Смена статуса
+    saveFilms(); // Сохранение списка фильмов
+    window.location.hash = ''; // Переход на главную страницу
 }

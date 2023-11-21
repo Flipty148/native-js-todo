@@ -1,7 +1,7 @@
 import { dispatchRemoveFilm, dispatchToggleFilmStatus } from "./events.js";
 import { arrayToString } from "./helpers.js";
 import { deleteIcon, eyeIcon, eyeOffIcon, editIcon, backIcon } from "./icons.js";
-import { handleAddFilmForm, handleRemoveConfirm } from "./form.js";
+import { handleAddFilmForm, handleRemoveConfirm, handleEditFilm } from "./form.js";
 
 
 function fragment(strings, ...values) {
@@ -174,7 +174,7 @@ export function renderEditFilm(film) {
     const page = fragment/*html*/`
     <div class="film-edit">
         <h1 class="page-title">Редактирование фильма<br> ${film.title}</h1>
-        <form class="form-film-edit" method="post">
+        <form class="form-film-edit" method="post" data-film-id=${film.id}>
             <label class="form-label edit-form-label">
                 <span class="edit-form-label-text">Название</span>
                 <input type="text" class="input" placeholder="Измените название" value="${film.title}" ${validation('название фильма')} name="title"/>
@@ -189,9 +189,9 @@ export function renderEditFilm(film) {
             </label>
             <label class="form-label edit-label">
                 <span class="edit-form-label-text">Статус</span>
-                <select class="input">
-                    <option value="true" ${film.status ? 'selected' : ''}>Просмотрен</option>
-                    <option value="false" ${!film.status ? 'selected' : ''}>Не просмотрен</option>
+                <select class="input" name="status">
+                    <option value="true" ${film.watch ? 'selected' : ''}>Просмотрен</option>
+                    <option value="false" ${!film.watch ? 'selected' : ''}>Не просмотрен</option>
                 </select>
             </label>
             <div class="edit-form-buttons">
@@ -201,5 +201,6 @@ export function renderEditFilm(film) {
         </form>
     </div>
     `;
+    page.querySelector('.form-film-edit').addEventListener('submit', handleEditFilm);
     return page;   
 }
