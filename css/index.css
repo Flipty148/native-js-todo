@@ -16,6 +16,8 @@
     --done-hover-color: #03791c;
     --progress-color: #b08300;
     --card-bg-color: #dfe7ee;
+    --scrollbar-bg-color: #d6d6d6;
+    --scrollbar-thumb-color: #8d8d8d;
 }
   
 .dark {
@@ -34,6 +36,8 @@
     --done-hover-color: #03791c;
     --progress-color: #ffc62a;
     --card-bg-color: #4a4a4a;
+    --scrollbar-bg-color: #2c2c2c;
+    --scrollbar-thumb-color: #0e0e0e;
 }
 
 * {
@@ -242,6 +246,20 @@ span.unwatched {
   overflow-y: auto; 
   max-height: 80vh;
 }
+
+.films__list::-webkit-scrollbar {
+  width: 10px;
+}
+.films__list::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-bg-color);
+  border-radius: 10px;
+}
+.films__list::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-color);
+  border: 3px solid var(--scrollbar-bg-color);
+  border-radius: 10px;
+}
+
 
 .films-add {
   flex: 0 0 auto;
