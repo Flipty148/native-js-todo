@@ -51,6 +51,7 @@ export function getFilmsList() {
  * @param {number} id 
  */
 export function getFilmById(id) {
+    filmsStorage = getFilmsList();
     return filmsStorage?.find(film => film.id === Number(id))
 }
 

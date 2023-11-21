@@ -1,6 +1,6 @@
 import { dispatchRemoveFilm, dispatchToggleFilmStatus } from "./events.js";
 import { arrayToString } from "./helpers.js";
-import { deleteIcon, eyeIcon, eyeOffIcon } from "./icons.js";
+import { deleteIcon, eyeIcon, eyeOffIcon, editIcon, backIcon } from "./icons.js";
 import { handleAddFilmForm, handleRemoveConfirm } from "./form.js";
 
 
@@ -87,6 +87,7 @@ function getFilmCardTemplate(filmsList) {
                 </div>
                 <div class="card-icons">
                     <div class="card-icon film-status-icon" onclick="${dispatchToggleFilmStatus(film.id)}">${film.watch ? eyeOffIcon() : eyeIcon()}</div>
+                    <a class="btn-icon btn-icon-edit" type="button" href="#/film/${film.id}/edit">${editIcon()}</a>
                     <a class="btn-icon btn-icon-danger" type="button" onclick="${dispatchRemoveFilm(film.id)}">${deleteIcon()}</a>
                 </div>
             </div>   
@@ -167,4 +168,38 @@ export function renderRemoveConfirm(film) {
     const form = content.querySelector('.form-remove-confirm');
     form.addEventListener('submit', (e) => handleRemoveConfirm(e, film.id));
     return content;
+}
+
+export function renderEditFilm(film) {
+    const page = fragment/*html*/`
+    <div class="film-edit">
+        <h1 class="page-title">Редактирование фильма<br> ${film.title}</h1>
+        <form class="form-film-edit" method="post">
+            <label class="form-label edit-form-label">
+                <span class="edit-form-label-text">Название</span>
+                <input type="text" class="input" placeholder="Измените название" value="${film.title}" ${validation('название фильма')} name="title"/>
+            </label>
+            <label class="form-label edit-form-label">
+                <span class="edit-form-label-text">Описание</span>
+                <textarea class="textarea" placeholder="Измените описание" name="description">${film.description}</textarea>
+            </label>
+            <label class="form-label edit-form-label">
+                <span class="edit-form-label-text">Жанры</span>
+                <input type="text" class="input" placeholder="Измените жанры, указав их через ';'" name="genres" value="${String(film.genres).replaceAll(',', ';')}" />
+            </label>
+            <label class="form-label edit-label">
+                <span class="edit-form-label-text">Статус</span>
+                <select class="input">
+                    <option value="true" ${film.status ? 'selected' : ''}>Просмотрен</option>
+                    <option value="false" ${!film.status ? 'selected' : ''}>Не просмотрен</option>
+                </select>
+            </label>
+            <div class="edit-form-buttons">
+                <button type="button" class="btn btn-primary" id="cancel-edit" onclick="history.back()">${backIcon()} Отменить изменения</button>
+                <button type="submit" class="btn btn-primary" id="save-edit">${editIcon()} Сохранить изменения</button>
+            </div>
+        </form>
+    </div>
+    `;
+    return page;   
 }

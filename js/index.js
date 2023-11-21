@@ -1,6 +1,6 @@
 import { initTheme } from "./theme.js";
-import { renderNotFound, renderFilmsList } from "./renders.js";
-import {getFilmsList } from "./data.js";
+import { renderNotFound, renderFilmsList, renderEditFilm } from "./renders.js";
+import {getFilmsList, getFilmById } from "./data.js";
 import { initEvents, handleDropdown } from "./events.js";
 
 const stylesLink = document.createElement("link");
@@ -35,9 +35,16 @@ function router() {
   const hash = window.location.hash; // Текущее положение хеша
   if (hash === '')
       return renderFilmsList(getFilmsList());
+  else if (/^#\/film\/\d+\/edit/.test(hash)) {
+    const filmId = hash.match(/^#\/film\/(\d+)\/edit/)[1]; // Id редактируемого фильма
+    const film = getFilmById(Number(filmId));
+    if (!film) 
+        return renderNotFound();
+    return renderEditFilm(film);
+  }
   else 
       return renderNotFound();
 }
 
-window.addEventListener('hashchange', updateContent());
+window.addEventListener('hashchange', () => updateContent());
 
