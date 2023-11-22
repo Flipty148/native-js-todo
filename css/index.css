@@ -514,3 +514,7 @@ input {
 #apply-filters-button:hover {
   background-color: var(--done-hover-color);
 }
+
+#reset-filters-button:hover {
+  background-color: var(--danger-hover-bg-color);
+}

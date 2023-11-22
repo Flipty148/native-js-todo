@@ -3,6 +3,7 @@ import { arrayToString } from "./helpers.js";
 import { deleteIcon, eyeIcon, eyeOffIcon, editIcon, backIcon } from "./icons.js";
 import { handleAddFilmForm, handleRemoveConfirm, handleEditFilm, handleFilterFilms } from "./form.js";
 import { getAllGenres } from "./data.js";
+import { updateContent } from "./index.js";
 
 
 function fragment(strings, ...values) {
@@ -50,6 +51,7 @@ export function renderFilmsList(filmsList) {
                     })()}
                 </label>
                 <button type="submit" class="btn btn-primary" id="apply-filters-button">Применить</button>
+                <button type="button" class="btn btn-primary" id="reset-filters-button" >Сбросить</button>
             </form>
         </div>
         <div class="films-block">
@@ -91,6 +93,8 @@ export function renderFilmsList(filmsList) {
     formFilters.addEventListener('submit', handleFilterFilms)
     const form = page.querySelector('.form-films-add');
     form.addEventListener('submit', handleAddFilmForm);
+    const reset = page.querySelector('#reset-filters-button');
+    reset.addEventListener('click', updateContent);
     return page;
 }
 
