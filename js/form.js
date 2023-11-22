@@ -1,6 +1,6 @@
 import { sanitize } from "./helpers.js";
-import { getFilmsList, saveFilms, getFilmById } from "./data.js";
-import { appendFilmCard, removeModal } from "./renders.js";
+import { getFilmsList, saveFilms, getFilmById, getFilteredFilmsList } from "./data.js";
+import { appendFilmCard, removeModal, removeAllFilmCards } from "./renders.js";
 import { updateContent } from "./index.js";
 import { handleRemoveFilm } from "./events.js";
 
@@ -11,15 +11,19 @@ let removeConfirm = false;
  * @param {Event} event 
  * @returns {{[key: string]: string}}
  */
-function handleForm(event) {
+function handleForm(event, clearInputs = true) {
     event.preventDefault(); // Отмена действия по умолчанию для события
     const form = event.target; // Получение формы
     if (!(form instanceof HTMLFormElement)) throw new Error("form must be a HTMLFormElement");
     const values = {};
     const inputs = form.querySelectorAll("input[name], textarea[name], select[name]"); // Получение элементов формы
     inputs.forEach(input => {
-        values[input.name] = sanitize(input.value); //Записать значение
-        input.value = ""; // Очистить значение
+        if (input.type === "checkbox")
+            values[input.name] = input.checked; //Записать значение
+        else
+            values[input.name] = sanitize(input.value);
+        if (clearInputs)
+            input.value = ""; // Очистить значение
     })
     return {values};
 }
@@ -78,4 +82,20 @@ export function handleEditFilm(event) {
     film.watch = status === 'true'; //Смена статуса
     saveFilms(); // Сохранение списка фильмов
     window.location.hash = ''; // Переход на главную страницу
+}
+
+export function handleFilterFilms(event) {
+    const {values} = handleForm(event, false); // Получение данных формы
+    const watch = values['watch'];
+    const genres = [];
+    for (let elem in values)
+    {
+        if (elem !== 'watch' && values[elem])
+            genres.push(elem);
+    }
+    const films = getFilteredFilmsList(watch, genres); // Получение списка фильмов
+    removeAllFilmCards();
+    films.forEach (film => {
+        appendFilmCard(film);
+    })
 }

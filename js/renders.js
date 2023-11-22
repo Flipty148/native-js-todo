@@ -1,7 +1,7 @@
 import { dispatchRemoveFilm, dispatchToggleFilmStatus } from "./events.js";
 import { arrayToString } from "./helpers.js";
 import { deleteIcon, eyeIcon, eyeOffIcon, editIcon, backIcon } from "./icons.js";
-import { handleAddFilmForm, handleRemoveConfirm, handleEditFilm } from "./form.js";
+import { handleAddFilmForm, handleRemoveConfirm, handleEditFilm, handleFilterFilms } from "./form.js";
 import { getAllGenres } from "./data.js";
 
 
@@ -31,23 +31,26 @@ export function renderFilmsList(filmsList) {
     <h1 class="page-title">Список фильмов для просмотра</h1>
     <div class="films-list">
         <div class="filters-block">
-            <label class="filters-label">Статус 
-                <select class="filters-whatch">
-                    <option value="all" selected>Все</option>
-                    <option value="true">Просмотрен</option>
-                    <option value="false">Не просмотрен</option>
-                </select>
-            </label>
-            <label class="filters-label">Жанры
-                ${(function fun() { // Вывод списка жанров
-                    const genres = getAllGenres();
-                    let res = "";
-                    genres.forEach((genre) => {
-                        res += getCheckboxTemplate(genre);
-                    });
-                    return res;
-                })()}
-            </label>
+            <form class="filters-form" method="post">
+                <label class="filters-label">Статус 
+                    <select class="filters-whatch" name="watch">
+                        <option value="all" selected>Все</option>
+                        <option value="true">Просмотрен</option>
+                        <option value="false">Не просмотрен</option>
+                    </select>
+                </label>
+                <label class="filters-label">Жанры
+                    ${(function fun() { // Вывод списка жанров
+                        const genres = getAllGenres();
+                        let res = "";
+                        genres.forEach((genre) => {
+                            res += getCheckboxTemplate(genre);
+                        });
+                        return res;
+                    })()}
+                </label>
+                <button type="submit" class="btn btn-primary" id="apply-filters-button">Применить</button>
+            </form>
         </div>
         <div class="films-block">
             <div class="films__list card-list">
@@ -84,6 +87,8 @@ export function renderFilmsList(filmsList) {
         </div>
     </div>
     `;
+    const formFilters = page.querySelector('.filters-form');
+    formFilters.addEventListener('submit', handleFilterFilms)
     const form = page.querySelector('.form-films-add');
     form.addEventListener('submit', handleAddFilmForm);
     return page;
@@ -144,6 +149,12 @@ export function appendFilmCard(film) {
 export function removeFilmCard(filmId) {
     const filmCard = document.querySelector(`.films__list .film[data-id="${filmId}"]`); // Найти карточку фильма
     filmCard.remove(); // Удалить карточку фильма
+}
+
+export function removeAllFilmCards() {
+    const filmCardList = document.querySelector('.films__list');
+    while (filmCardList.firstChild)
+        filmCardList.removeChild(filmCardList.lastChild);
 }
 
 export function rerenderFilmCard(film) {

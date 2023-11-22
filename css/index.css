@@ -250,6 +250,9 @@ span.unwatched {
 .filters-block {
   min-width: 25%;
   max-width: 25%;
+}
+
+.filters-form {
   display: flex;
   flex-direction: column;
   gap: 1rem 0;
@@ -506,4 +509,8 @@ input {
 
 .checkbox-label {
   font-size: large;
+}
+
+#apply-filters-button:hover {
+  background-color: var(--done-hover-color);
 }

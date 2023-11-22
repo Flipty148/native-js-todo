@@ -78,3 +78,31 @@ export function getAllGenres() {
     const resArr = Array.from(res).sort(); // Сортировка в алфавитном порядке
     return resArr;
 }
+
+export function getFilteredFilmsList(watch, genres) {
+    const films = getFilmsList(); //Получить список фильмов
+    let res = new Set();
+    films.forEach( (film) => {
+        if (watch === 'true') {
+            if (film.watch && (film.genres.some(genre => genres.includes(genre)) || genres.length === 0 ))
+                res.add(film);
+            if (film.watch && film.genres[0] === "" && genres.includes('Без жанра'))
+                res.add(film);
+        }
+        else if (watch ==='false') {
+            if (!film.watch && (film.genres.some(genre => genres.includes(genre)) || genres.length === 0))
+                res.add(film);
+            if (!film.watch && film.genres[0] === "" && genres.includes('Без жанра'))
+                res.add(film);
+        }
+        else {
+            if (genres.length === 0)
+                res.add(film);
+            else if (film.genres.some(genre => genres.includes(genre)))
+                res.add(film);  
+            if (film.genres[0] === "" && genres.includes('Без жанра'))
+                res.add(film);              
+        }
+    });
+    return Array.from(res);    
+}
